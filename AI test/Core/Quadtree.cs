@@ -12,6 +12,7 @@ namespace AI_test.Core
 {
     //https://badecho.com/index.php/2023/01/14/fast-simple-quadtree/
     //https://gist.github.com/MechanicalFerret/a871b49a607292d32d7a
+    //https://gamedevelopment.tutsplus.com/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374t
 
     public class Quadtree
     {
