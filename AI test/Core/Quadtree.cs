@@ -12,6 +12,7 @@ namespace AI_test.Core
 {
     //https://badecho.com/index.php/2023/01/14/fast-simple-quadtree/
     //https://gist.github.com/MechanicalFerret/a871b49a607292d32d7a
+    //http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
 
     public class Quadtree
     {
@@ -19,7 +20,7 @@ namespace AI_test.Core
         private const int MAX_LEVELS = 5;
 
         private int level;
-        private List<Sprite> collidableObjects;
+        private List<Collider> collidableObjects;
         private Rectangle bounds;
         private Quadtree[] nodes;
 
@@ -28,7 +29,7 @@ namespace AI_test.Core
         public Quadtree(int _level, Rectangle _bounds)
         {
             level = _level;
-            collidableObjects = new List<Sprite>();
+            collidableObjects = new List<Collider>();
             bounds = _bounds;
             nodes = new Quadtree[4];
         }
@@ -52,10 +53,10 @@ namespace AI_test.Core
             int subHeight = bounds.Height / 2;
             int x = bounds.X;
             int y = bounds.Y;
-            nodes[0] = new Quadtree(level+1, new Rectangle(x + subWidth, y, subWidth, subHeight));
-            nodes[1] = new Quadtree(level+1, new Rectangle(x, y, subWidth, subHeight));
-            nodes[2] = new Quadtree(level+1, new Rectangle(x, y + subHeight, subWidth, subHeight));
-            nodes[3] = new Quadtree(level+1, new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
+            nodes[0] = new Quadtree(level + 1, new Rectangle(x + subWidth, y, subWidth, subHeight));
+            nodes[1] = new Quadtree(level + 1, new Rectangle(x, y, subWidth, subHeight));
+            nodes[2] = new Quadtree(level + 1, new Rectangle(x, y + subHeight, subWidth, subHeight));
+            nodes[3] = new Quadtree(level + 1, new Rectangle(x + subWidth, y + subHeight, subWidth, subHeight));
         }
 
         private int GetIndex(Rectangle _Rect)
@@ -64,12 +65,12 @@ namespace AI_test.Core
             double verticalMidpoint = bounds.X + (bounds.Width / 2);
             double horizontalMidpoint = bounds.Y + (bounds.Height / 2);
 
-            bool topQuadrant = (_Rect.Y < horizontalMidpoint &&  _Rect.Y + _Rect.Height < verticalMidpoint);
+            bool topQuadrant = (_Rect.Y < horizontalMidpoint && _Rect.Y + _Rect.Height < verticalMidpoint);
             bool bottomQuadrant = (_Rect.Y > horizontalMidpoint);
 
-            if(_Rect.X < verticalMidpoint && _Rect.X + _Rect.Width < verticalMidpoint)
+            if (_Rect.X < verticalMidpoint && _Rect.X + _Rect.Width < verticalMidpoint)
             {
-                if(topQuadrant)
+                if (topQuadrant)
                 {
                     index = 1;
                 }
@@ -82,13 +83,13 @@ namespace AI_test.Core
             {
                 if (topQuadrant)
                     index = 0;
-                if(bottomQuadrant)
+                if (bottomQuadrant)
                     index = 3;
             }
             return index;
         }
 
-        public void Insert(Sprite _body)
+        public void Insert(Collider _body)
         {
             if (nodes[0] != null)
             {
@@ -101,36 +102,36 @@ namespace AI_test.Core
             }
 
             collidableObjects.Add(_body);
-            if(collidableObjects.Count > MAX_OBJECTS && level < MAX_LEVELS)
+            if (collidableObjects.Count > MAX_OBJECTS && level < MAX_LEVELS)
             {
                 if (nodes[0] == null)
                 {
                     Split();
                 }
-                List<Sprite> save = new List<Sprite>();
-                foreach(Sprite sprite in collidableObjects.ToList())
-                { 
-                    int index = GetIndex(sprite.Rectangle);
-                    if(index != -1)
-                        nodes[index].Insert(sprite);
-                    else 
-                        save.Add(sprite);
+                List<Collider> save = new List<Collider>();
+                foreach (Collider collider in collidableObjects.ToList())
+                {
+                    int index = GetIndex(collider.Rectangle);
+                    if (index != -1)
+                        nodes[index].Insert(collider);
+                    else
+                        save.Add(collider);
                 }
                 collidableObjects = save;
             }
         }
-        private void Remove(Sprite _body)
+        private void Remove(Collider _body)
         {
-            if(collidableObjects == null && collidableObjects.Contains(_body))
+            if (collidableObjects == null && collidableObjects.Contains(_body))
             {
                 collidableObjects.Remove(_body);
             }
         }
 
-        public void Delete(Sprite _body)
+        public void Delete(Collider _body)
         {
             bool objectRemoved = false;
-            if(collidableObjects != null && collidableObjects.Contains(_body))
+            if (collidableObjects != null && collidableObjects.Contains(_body))
             {
                 Remove(_body);
                 objectRemoved = true;
@@ -155,29 +156,29 @@ namespace AI_test.Core
             }
         }
 
-        public List<Sprite>Retrieve(Rectangle _rect)
+        public List<Collider> Retrieve(Rectangle _rect)
         {
             int index = GetIndex(_rect);
-            List<Sprite> returnedObjects = new List<Sprite>(collidableObjects);
+            List<Collider> returnedObjects = new List<Collider>(collidableObjects);
 
             //If we have subnodes
             if (nodes[0] != null)
             {
                 //If _rect fits into a sub node
-                if(index != -1)
+                if (index != -1)
                 {
                     returnedObjects.AddRange(nodes[index].Retrieve(_rect));
                 }
                 //If _rect does not fit into a subnode, check it against all subnodes
                 else
                 {
-                    for(int i = 0; i < nodes.Length; i++)
+                    for (int i = 0; i < nodes.Length; i++)
                     {
                         returnedObjects.AddRange(nodes[i].Retrieve(_rect));
                     }
                 }
             }
-            return returnedObjects; 
+            return returnedObjects;
         }
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using static System.Net.Mime.MediaTypeNames;
 using System.Reflection.Emit;
+using System.Net.Http.Headers;
 
 namespace AI_test.Core
 {
@@ -58,7 +59,7 @@ namespace AI_test.Core
             dataSet.ReadXml(new StringReader(doc.InnerXml));
             return dataSet.Tables[0];
         }
-        
+
         public static Node[,] GetGridFromXML(Node[,] grid)
         {
             XDocument xmlFile = XDocument.Load(FILENAME);

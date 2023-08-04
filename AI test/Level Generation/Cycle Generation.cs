@@ -9,6 +9,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace AI_test.Level_Generation
 {
+    //This is a rough idea for generating the world using cycles and graph grammars. Probably not going to use it.
     public class CycleGenerator
     {
         Random random = new Random();
@@ -102,9 +103,14 @@ namespace AI_test.Level_Generation
                 }
             }
         }
-        public void UseGrammars(Dictionary<int, string> list, AdjacencyList adjacencyList)
+        public Dictionary<int, Tuple<string, string>> UseGrammars(Dictionary<int, string> list, AdjacencyList adjacencyList)
         {
+            Dictionary<int, Tuple<string, string>> modifiedDict = new Dictionary<int, Tuple<string, string>>();
             bool govDuplicateExists = false;
+            for (int i = 0; i < list.Count; i++)
+            {
+                modifiedDict.Add(i, new Tuple<string, string>(list[i], "null"));
+            }
             var q = list.GroupBy(x => x.Value).Where(x => x.Count() > 1 );
             foreach( var x in q)
             {
@@ -121,17 +127,18 @@ namespace AI_test.Level_Generation
                 if(node.Value == "Government")
                 {
                     if(!govDuplicateExists)
-                        list[node.Key] = "Central Administration and Space Station";
+                        modifiedDict[node.Key] = new Tuple<string, string>("Government","Central Administration and Space Station");
                     else 
                     {
-                        
+                        modifiedDict[node.Key] = new Tuple<string, string>("Government", Grammars(cycleGraph[node.Key], "Government")); 
                     }
                 }
                 else
                 {
-
+                    modifiedDict[node.Key] = new Tuple<string, string>(node.Value, Grammars(cycleGraph[node.Key], node.Value)); 
                 }
             }
+            return modifiedDict;
         }
         public string Grammars(LinkedList<Tuple<int, string>> vertices, string nodeType)
         {

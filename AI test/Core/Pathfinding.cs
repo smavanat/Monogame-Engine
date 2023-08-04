@@ -8,6 +8,8 @@ using System.Xml.Linq;
 
 namespace AI_test.Core
 {
+    //Using Sebastian Lague's implentation of 2D A* with some edits
+    //Pretty good explanation of the algorithm https://www.youtube.com/watch?v=-L-WgKMFuhE&t=1s&ab_channel=SebastianLague
     public class Pathfinding
     {
         Grid map;

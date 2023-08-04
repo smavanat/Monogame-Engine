@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,12 +14,17 @@ namespace AI_test.Sprites
 {
     public class Player : Sprite
     {
-        private int speed = 3;
-        private Vector2 origin;
+        private float speed = 1f;
+        private Vector2 origin;//Origin of the image for rotation
         private MouseState oldMouseState;
+        protected Collider collider;
+        private Vector2 previousPosition;
 
-        public Player(Texture2D _texture, Vector2 _position):base(_texture, _position, 0, 5, false) 
-        { origin = new Vector2(texture.Width / 2, texture.Height / 2); IsCollideable = true; }
+        public Player(Texture2D _texture, Vector2 _position):base(_texture, _position, 0, false) 
+        { 
+            origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            collider = new Collider(new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height), this);
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -37,20 +44,21 @@ namespace AI_test.Sprites
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 Velocity.X = speed;
 
-            if (IsColliding)
-            {
+            if(Velocity != Vector2.Zero)
+                Velocity.Normalize();
+
+            if (collider.IsColliding)
                 Position += Vector2.Zero;
-            }
             else
-            {
                 Position += Velocity;
-            }
+            
             oldMouseState = mouseState;
         }
 
+
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, null, Color.White, Rotation, origin, this.Scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, Position, null, Color.White, Rotation, origin, 1, SpriteEffects.None, 0f);
             base.Draw(gameTime, spriteBatch);
         }
     }

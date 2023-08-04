@@ -1,0 +1,17 @@
+For MVP:
+Figure out interactable objects
+Get Basic AI running
+Do a limited layout
+Sprites for player and some NPCs
+Map Editor
+
+In General:
+Total layout
+Multi-floor buildings
+In-game internet
+Skills/Research
+
+Known Bugs:
+Collision does not move when holding key in colliding direction and non-colliding direction
+Can move into walls if using small key presses. Long key presses do not work though
+Possible solution: https://community.monogame.net/t/solved-how-would-i-go-about-sliding-a-collision-while-moving-diagonally/11343/3

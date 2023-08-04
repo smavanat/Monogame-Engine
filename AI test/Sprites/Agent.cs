@@ -18,7 +18,7 @@ namespace AI_test.Sprites
         private MouseState oldMouseState;
         private int speed = 50;
 
-        public Agent(Texture2D _texture, Vector2 _position, float _rotation) : base(_texture, _position, _rotation, 1, false)
+        public Agent(Texture2D _texture, Vector2 _position, float _rotation) : base(_texture, _position, _rotation, false)
         {
             targetPosition = _position;
         }

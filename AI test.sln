@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AI test", "AI test\AI test.csproj", "{9B203156-58B9-4C92-956A-64B6D1C6357F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repression-MVP", "AI test\Repression-MVP.csproj", "{9B203156-58B9-4C92-956A-64B6D1C6357F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

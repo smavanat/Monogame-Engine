@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AI_test.Core
 {
+    //Basic class that is used by all objects that update,
     public abstract class Component
     {
         public Component() { EntityManager.AddGameObject(this); }

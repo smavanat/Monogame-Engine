@@ -19,18 +19,23 @@ namespace AI_test.Core
         public bool isWalkable;
         public Node parent;
         public int bitValue;
+        public Collider collider;
         int heapIndex;
-        public Node(int x, int y, int id, Texture2D _image, bool walkable, Vector2 position, float _rotation):base(_image, position, _rotation, 5, false)
+        public Node(int x, int y, int id, Texture2D _image, bool walkable, Vector2 position, float _rotation) : base(_image, position, _rotation, false)
         {
             xPos = x;
             yPos = y;
             isWalkable = walkable;
-            IsCollideable = !walkable;
+            //IsCollideable = !walkable;
             bitValue = id;
             if (isWalkable)
                 bitValue = 0;
             else
+            {
                 bitValue = 1;
+                collider = new Collider(new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height), this);
+                //IsCollideable = true;
+            }
         }
         //For aStar pathfinding
         public int fCost
@@ -64,13 +69,13 @@ namespace AI_test.Core
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if(bitValue == 1)
+            if (bitValue == 1)
             {
-                spriteBatch.Draw(texture, Position, null, Color.Black, 0, new Vector2(texture.Width/2, texture.Height/2), this.Scale, SpriteEffects.None, 1f);
+                spriteBatch.Draw(texture, Position, null, Color.Black, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
             }
             else
             {
-                spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), this.Scale, SpriteEffects.None, 1f);
+                spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
             }
             base.Draw(gameTime, spriteBatch);
         }
@@ -102,20 +107,14 @@ namespace AI_test.Core
                 for (int y = 0; y < gridSizeY; y++)
                 {
                     Vector2 worldpoint = worldBottomLeft + new Vector2(1, 0) * (x * nodeDiameter + nodeRadius) + new Vector2(0, 1) * (y * nodeDiameter + nodeRadius);
-                    grid[x, y] = new Node(x, y, 0, _sprite, true, worldpoint, 0f);
+                    if(y == x)
+                        grid[x, y] = new Node(x, y, 1, _sprite, false, worldpoint, 0f);
+                    else
+                        grid[x, y] = new Node(x, y, 1, _sprite, true, worldpoint, 0f);
                 }
             }
-            grid = WriteToXML.GetGridFromXML(grid);
-
-            foreach(Node node in grid)
-            {
-                //Debug.WriteLine(node.bitValue);
-                if(node.bitValue == 1)
-                {
-                    node.IsCollideable = true;
-                }
-            }
-            SpawnObjects();
+            //grid = WriteToXML.GetGridFromXML(grid);
+            //SpawnObjects();
         }
         //Given a node, get the 8 neighbours surrounding it.
         public List<Node> GetNeighbours(Node node)
@@ -158,9 +157,9 @@ namespace AI_test.Core
 
         public void SpawnObjects()
         {
-            foreach(Node n in grid)
+            foreach (Node n in grid)
             {
-                if(n.bitValue == 3)
+                if (n.bitValue == 3)
                 {
                     Door d = new Door(ObjectSpawner.textures["Door"], n.Position);
                 }
@@ -175,7 +174,7 @@ namespace AI_test.Core
         }
         public override void Update(GameTime gameTime)
         {
-            
+
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
