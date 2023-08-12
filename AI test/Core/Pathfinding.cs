@@ -1,10 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AI_test.Sprites;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace AI_test.Core
 {
@@ -13,55 +11,66 @@ namespace AI_test.Core
     public class Pathfinding
     {
         Grid map;
-        public List<Node> returnedPath;
+        public Node[] returnedPath;
         public Pathfinding(Grid _map)
         {
             map = _map;
         }
         public void FindAstarPath(Node startNode, Node targetNode)
         {
+            Node[] waypoints = new Node[0];
+            bool pathSuccess = false;
 
-            Heap<Node> openSet = new Heap<Node>(map.MaxSize);
-            HashSet<Node> closedSet = new HashSet<Node>();
-            openSet.Add(startNode);
-
-            while (openSet.Count > 0)
+            if (startNode.isWalkable && targetNode.isWalkable)
             {
-                Node currentNode = openSet.RemoveFirst();
-                closedSet.Add(currentNode);
+                Heap<Node> openSet = new Heap<Node>(map.MaxSize);
+                HashSet<Node> closedSet = new HashSet<Node>();
+                openSet.Add(startNode);
 
-                if (currentNode == targetNode)
+                while (openSet.Count > 0)
                 {
-                    returnedPath = RetracePath(startNode, targetNode);
-                    return;
-                }
+                    Node currentNode = openSet.RemoveFirst();
+                    closedSet.Add(currentNode);
 
-                foreach (Node neighbour in map.GetNeighbours(currentNode))
-                {
-                    if (!neighbour.isWalkable || closedSet.Contains(neighbour))
+                    if (currentNode == targetNode)
                     {
-                        continue;
+                        pathSuccess = true;
+                        break;
                     }
 
-                    int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
-                    if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                    foreach (Node neighbour in map.GetNeighbours(currentNode))
                     {
-                        neighbour.gCost = newMovementCostToNeighbour;
-                        neighbour.hCost = GetDistance(neighbour, targetNode);
-                        neighbour.parent = currentNode;
-
-                        if (!openSet.Contains(neighbour))
-                            openSet.Add(neighbour);
-                        else
+                        if (!neighbour.isWalkable || closedSet.Contains(neighbour))
                         {
-                            //openSet.UpdateItem(neighbour);
+                            continue;
+                        }
+
+                        int newMovementCostToNeighbour = currentNode.gCost + GetDistance(currentNode, neighbour);
+                        if (newMovementCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                        {
+                            neighbour.gCost = newMovementCostToNeighbour;
+                            neighbour.hCost = GetDistance(neighbour, targetNode);
+                            neighbour.parent = currentNode;
+
+                            if (!openSet.Contains(neighbour))
+                                openSet.Add(neighbour);
                         }
                     }
                 }
+                //foreach (Node n in closedSet)
+                //{
+                //    n.bitValue = 3;
+                //}
             }
+            if (pathSuccess)
+                returnedPath = RetracePath(startNode, targetNode);
+            //foreach (Node n in returnedPath)
+            //{
+            //    n.bitValue = 4;
+            //}
         }
 
-        List<Node> RetracePath(Node startNode, Node endNode)
+        Node[] RetracePath(Node startNode, Node endNode)
         {
             List<Node> path = new List<Node>();
             Node currentNode = endNode;
@@ -71,8 +80,29 @@ namespace AI_test.Core
                 path.Add(currentNode);
                 currentNode = currentNode.parent;
             }
-            path.Reverse();
-            return path;
+            path.Add(startNode);
+            Node[] waypoints = SimplifyPath(path);
+            Array.Reverse(waypoints);
+            return waypoints;
+        }
+
+        Node[] SimplifyPath(List<Node> path)
+        {
+            List<Node> waypoints = new List<Node>();
+            Vector2 directionOld = Vector2.Zero;
+
+            waypoints.Add(path[0]);
+
+            for (int i = 1; i < path.Count; i++)
+            {
+                Vector2 directionNew = new Vector2(path[i - 1].xPos - path[i].xPos, path[i - 1].yPos - path[i].yPos);
+                if (directionNew != directionOld)
+                {
+                    waypoints.Add(path[i-1]);
+                }
+                directionOld = directionNew;
+            }
+            return waypoints.ToArray();
         }
 
         int GetDistance(Node nodeA, Node nodeB)

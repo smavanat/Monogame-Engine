@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<grid name ="Test Grid" sizeX ="10" sizeY ="10">
+	<Row>1 1 1 1 1 1 1 1 1 1</Row>
+	<Row>1 0 0 0 0 0 0 0 0 1</Row>
+	<Row>1 0 0 1 0 0 0 0 0 1</Row>
+	<Row>1 0 0 0 1 0 0 0 0 1</Row>
+	<Row>1 0 0 0 0 0 0 1 0 1</Row>
+	<Row>1 0 0 0 0 0 0 0 0 1</Row>
+	<Row>1 0 0 0 0 1 0 0 0 1</Row>
+	<Row>1 0 0 0 0 0 0 1 0 1</Row>
+	<Row>1 0 0 0 0 0 0 0 0 1</Row>
+	<Row>1 1 1 1 1 1 1 1 1 1</Row>
+</grid>

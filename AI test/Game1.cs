@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using AI_test.Level_Generation;
+using System.Text;
+using System;
 
 namespace AI_test
 {
@@ -13,10 +15,14 @@ namespace AI_test
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         Player player;
-        Grid grid;
+        public Grid grid;
+        Agent agent;
         public static int ScreenHeight;
         public static int ScreenWidth;
         public static Game1 _instance;
+        public static MouseState mouseState;
+        //PathRequestManager pathRequestManager;
+        Pathfinding pathfinding;
         //CycleGenerator cycleGenerator;
 
         public Game1()
@@ -44,9 +50,11 @@ namespace AI_test
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            ObjectSpawner.Load(_instance);
-            player = new Player(ObjectSpawner.textures["Player"], new Vector2(300, 300));
-            grid = new Grid(450, 300, 15, new Vector2(200, 200), ObjectSpawner.textures["Nodes"]);
+            ArtManager.Load(_instance);
+            player = new Player(ArtManager.textures["Player"], new Vector2(300, 300));
+            grid = new Grid(new Vector2(150, 150), 15, new Vector2(200, 200), ArtManager.textures["Nodes"]);
+            agent = new Agent(ArtManager.textures["Player"], grid.grid[8, 8].Position, 0, grid.grid[1, 1], grid);
+            pathfinding = new Pathfinding(grid);
             //cycleGenerator = new CycleGenerator(7);
         }
 

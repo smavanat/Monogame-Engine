@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
-using static System.Net.Mime.MediaTypeNames;
-using System.Reflection.Emit;
-using System.Net.Http.Headers;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace AI_test.Core
 {
     static class WriteToXML
     {
-        const string FILENAME = @"c:\temp\test.xml";
+        const string FILENAME = @"C:\Users\EdwinH\Documents\My Work\Data Structures and Algorithms\AI test\AI test\Level Generation\Levels\Test Level.xml";
         //Writes a 2D array to an XML file
         public static void WriteGridToXML(Node[,] grid)
         {
@@ -91,5 +85,7 @@ namespace AI_test.Core
             }
             return grid;
         }
+        
     }
+    
 }

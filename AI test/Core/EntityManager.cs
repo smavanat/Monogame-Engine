@@ -95,16 +95,11 @@ namespace AI_test.Core
                         else if ((colliders[i].Parent.Velocity.Y > 0 && IsTouchingTop(colliders[i], returnObjects[x])) ||
                             (colliders[i].Parent.Velocity.Y < 0 && IsTouchingBottom(colliders[i], returnObjects[x])))
                         {
-                            //colliders[i].IsCollidingVertically = true;
                             colliders[i].IsColliding = true;
                             break;
                         }
-                        //if (rect.Intersects(returnObjects[x].Rectangle))
-                        //    colliders[i].IsColliding = true;
                         else
                         {
-                            //colliders[i].IsCollidingHorizontally = false;
-                            //colliders[i].IsCollidingVertically = false;
                             colliders[i].IsColliding = false;
                         }
                     }
@@ -159,7 +154,7 @@ namespace AI_test.Core
         #endregion
 
     }
-    public static class ObjectSpawner
+    public static class ArtManager
     {
         public static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 

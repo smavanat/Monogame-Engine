@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AI_test.Core;
+using System.Collections;
+using System.Diagnostics;
 
 namespace AI_test.Sprites
 {
@@ -14,47 +16,64 @@ namespace AI_test.Sprites
     {
         public Vector2 targetPosition;
 
-        private Vector2 direction;
-        private MouseState oldMouseState;
-        private int speed = 50;
+        public Node[] path;
+        private float speed = 1f;
+        int targetIndex;
+        Pathfinding pathfinding;
+        Node currentWaypoint;
+        bool hasReachedTarget = false;
+        GameTime _gameTime;
+        Grid map;
 
-        public Agent(Texture2D _texture, Vector2 _position, float _rotation) : base(_texture, _position, _rotation, false)
+        public Agent(Texture2D _texture, Vector2 _position, float _rotation, Node targetNode, Grid _map) : base(_texture, _position, _rotation, false)
         {
-            targetPosition = _position;
+            map = _map;
+            pathfinding = new Pathfinding(map);
+            //targetPosition = targetNode.Position;
+            //pathfinding.FindAstarPath(map.NodeFromWorldPoint(Position), targetNode);
+            //path = pathfinding.returnedPath;
+            //currentWaypoint = path[0];
+            //PathRequestManager.RequestPath(map.NodeFromWorldPoint(Position), targetNode, OnPathFound);
         }
 
-        public void agentUpdate(GameTime gameTime)
+        public override void Update(GameTime gameTime) 
         {
-            MouseState mouseState = Mouse.GetState();
+            _gameTime = gameTime;
+            Move();
+        }
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
-                targetPosition = new Vector2(mouseState.X, mouseState.Y);
+        public void GetNewTarget(Node targetNode)
+        {
+            targetPosition = targetNode.Position;
+            pathfinding.FindAstarPath(map.NodeFromWorldPoint(Position), targetNode);
+            path = pathfinding.returnedPath;
+            currentWaypoint = path[0];
+        }
 
-            if (Vector2.Distance(Position, targetPosition) > 1)
+        public void Move()
+        {
+            if ((Vector2.Distance(Position, currentWaypoint.Position) < 1f))
             {
-                Position = SteeringBehaviours.Seek(Position, targetPosition, gameTime, speed);
+                targetIndex++;
+                if (targetIndex >= path.Length)
+                {
+                    hasReachedTarget = true;
+                    speed = 0;
+                }
+                else
+                    currentWaypoint = path[targetIndex];
             }
-            else
+
+            if (!(Vector2.Distance(Position, targetPosition) < 1f))
             {
-                direction = Vector2.Zero;
+                Position = SteeringBehaviours.Seek(Position, currentWaypoint.Position, _gameTime, 50);
             }
         }
+
         public override void Draw(GameTime gametime, SpriteBatch spriteBatch)
         {
-            int width = texture.Width;
-            int height = texture.Height;
-
-            Rectangle sourceRectangle = new Rectangle(width, height, width, height); //Image within the texture we want to draw
-            Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height); //Where we want to draw the texture within the game
-
-            spriteBatch.Draw(texture, Position, Color.White);
+            spriteBatch.Draw(texture, Position, null, Color.White, Rotation, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 0f);
+            base.Draw(gametime, spriteBatch);
         }
-
-        #region StateMachine
-        void Move()
-        {
-
-        }
-        #endregion
     }
 }
