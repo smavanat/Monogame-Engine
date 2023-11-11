@@ -10,6 +10,7 @@
 //    //http://web.archive.org/web/20100325211214/http://blog.nickgravelyn.com/2010/02/the-magic-of-yield/
 //    //https://gamedev.stackexchange.com/questions/45183/how-do-i-call-functions-that-take-more-than-one-frame-to-finish
 //    //https://community.monogame.net/t/coroutines-in-monogame-project/2721/6
+      //This is just kept for reference. Other version elsewhere in the project.
 //    public class Pathfinding
 //    {
 //        Grid map;

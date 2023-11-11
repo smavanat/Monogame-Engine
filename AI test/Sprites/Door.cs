@@ -32,6 +32,8 @@ namespace AI_test.Sprites
             base.Draw(gameTime, spriteBatch);
         }
 
+        //This is for  a feature that should be implemented sometime soon - player interactivity.
+        //But this will take a while.
         public void Effect()
         {
             Debug.WriteLine("This works");

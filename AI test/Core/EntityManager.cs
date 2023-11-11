@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 
@@ -44,7 +45,7 @@ namespace AI_test.Core
         //Updates all items in the game simultaneously for ease of use.
         public static void Update(GameTime gameTime)
         {
-            foreach (Component component in GameObjects)
+            foreach (Component component in GameObjects.ToList())
             {
                     component.Update(gameTime);
             }
@@ -154,6 +155,7 @@ namespace AI_test.Core
         #endregion
 
     }
+    //Handles all the art assets within the game.
     public static class ArtManager
     {
         public static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();

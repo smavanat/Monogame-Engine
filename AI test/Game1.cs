@@ -1,5 +1,6 @@
 ﻿using AI_test.Sprites;
 using AI_test.Core;
+using AI_test.AI_and_Behaviours;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -23,6 +24,7 @@ namespace AI_test
         public static MouseState mouseState;
         //PathRequestManager pathRequestManager;
         Pathfinding pathfinding;
+        AgentBT bT;
         //CycleGenerator cycleGenerator;
 
         public Game1()
@@ -53,8 +55,9 @@ namespace AI_test
             ArtManager.Load(_instance);
             player = new Player(ArtManager.textures["Player"], new Vector2(300, 300));
             grid = new Grid(new Vector2(150, 150), 15, new Vector2(200, 200), ArtManager.textures["Nodes"]);
-            agent = new Agent(ArtManager.textures["Player"], grid.grid[8, 8].Position, 0, grid.grid[1, 1], grid);
             pathfinding = new Pathfinding(grid);
+            agent = new Agent(ArtManager.textures["Player"], grid.grid[8, 8].Position, 0, grid.grid[1, 1], grid);
+            //bT = new AgentBT(agent);
             //cycleGenerator = new CycleGenerator(7);
         }
 

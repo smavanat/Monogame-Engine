@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace AI_test.Core
 {
+    //This is a general rectangle collider class that handles collisions.
     public class Collider : Component
     {
         //public bool IsCollidingHorizontally = false;
@@ -41,7 +42,7 @@ namespace AI_test.Core
 
         protected virtual void OnCollisionEnter2D()
         {
-            CollisionEnter2D?.Invoke();
+            CollisionEnter2D?.Invoke();//Using c# events
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {}

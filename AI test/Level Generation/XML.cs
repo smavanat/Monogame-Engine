@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AI_test.Core
 {
+    //Used for manipulating stuff in XML files, but since I only need simple stuff, I've mostly moved that to the Grid class
     static class WriteToXML
     {
         const string FILENAME = @"C:\Users\EdwinH\Documents\My Work\Data Structures and Algorithms\AI test\AI test\Level Generation\Levels\Test Level.xml";

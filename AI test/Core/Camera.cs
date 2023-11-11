@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AI_test.Core
 {
+    //This is a camera class that follows the player.
     public static class Camera
     {
         public static Matrix Transform { get; private set; }

@@ -7,6 +7,15 @@
 
 //namespace AI_test.Core
 //{
+//      Using Sebastian Lague's implentation of 2D A* with some edits
+//      //Pretty good explanation of the algorithm https://www.youtube.com/watch?v=-L-WgKMFuhE&t=1s&ab_channel=SebastianLague
+//      //http://web.archive.org/web/20100325211214/http://blog.nickgravelyn.com/2010/02/the-magic-of-yield/
+//      //https://gamedev.stackexchange.com/questions/45183/how-do-i-call-functions-that-take-more-than-one-frame-to-finish
+//      //https://community.monogame.net/t/coroutines-in-monogame-project/2721/6
+        //It doesn't work that well since it was designed for unity so I've done my own version that
+        //Sort of works in the Agent class.
+        //This is just kept for reference.
+
 //    public class PathRequestManager
 //    {
 //        Queue<PathRequest> pathRequestQueue = new Queue<PathRequest>();
