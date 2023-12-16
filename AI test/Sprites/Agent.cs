@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using AI_test.Core;
 using AI_test.AI_and_Behaviours;
-using AI_test.ToolsllStoragellPrefabs;
+using AI_test.ToolsIIStorageIIPrefabs;
 
 namespace AI_test.Sprites
 {
@@ -27,13 +27,13 @@ namespace AI_test.Sprites
         AgentBT bT;//Child behaviour tree
 
         //Constructor
-        public Agent(Texture2D _texture, Vector2 _position, float _rotation, Node targetNode, Grid _map) : base(_texture, _position, _rotation, false)
+        public Agent(Texture2D _texture, Vector2 _position, float _rotation, Node targetNode, Grid _map) : base(_texture, _position, _rotation)
         {
             map = _map;
             pathfinding = new Pathfinding(map);
             bT = new AgentBT(this);
             targetPosition = this.Position;
-            inv = new Inventory(this);
+            //inv = new Inventory(this);
         }
 
         public override void Update(GameTime gameTime) 
@@ -68,7 +68,7 @@ namespace AI_test.Sprites
 
             if (!(Vector2.Distance(Position, targetPosition) < 1f))
             {
-                Position = SteeringBehaviours.Seek(Position, currentWaypoint.Position, _gameTime, 50);
+                //Position = SteeringBehaviours.Seek(Position, currentWaypoint.Position, _gameTime, 50);
             }
         }
 

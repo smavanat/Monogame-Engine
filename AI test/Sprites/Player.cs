@@ -5,10 +5,6 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AI_test.Sprites
 {
@@ -20,10 +16,11 @@ namespace AI_test.Sprites
         protected Collider collider;
         private Vector2 previousPosition;
 
-        public Player(Texture2D _texture, Vector2 _position):base(_texture, _position, 0, false) 
+        public Player(Texture2D _texture, Vector2 _position):base(_texture, _position, 0) 
         { 
             origin = new Vector2(texture.Width / 2, texture.Height / 2);
             collider = new Collider(new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height), this);
+            AddChild(collider);
         }
 
         public override void Update(GameTime gameTime)

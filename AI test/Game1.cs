@@ -25,6 +25,8 @@ namespace AI_test
         //PathRequestManager pathRequestManager;
         Pathfinding pathfinding;
         AgentBT bT;
+        new Overarching_sprite_test test;
+        //Woodcutter woodCutter;
         //CycleGenerator cycleGenerator;
 
         public Game1()
@@ -56,9 +58,9 @@ namespace AI_test
             player = new Player(ArtManager.textures["Player"], new Vector2(300, 300));
             grid = new Grid(new Vector2(150, 150), 15, new Vector2(200, 200), ArtManager.textures["Nodes"]);
             pathfinding = new Pathfinding(grid);
-            agent = new Agent(ArtManager.textures["Player"], grid.grid[8, 8].Position, 0, grid.grid[1, 1], grid);
+            test = new Overarching_sprite_test(ArtManager.textures["Player"], grid.grid[8, 8].Position);
+            //agent = new Agent(ArtManager.textures["Player"], grid.grid[8, 8].Position, 0, grid.grid[1, 1], grid);
             //bT = new AgentBT(agent);
-            //cycleGenerator = new CycleGenerator(7);
         }
 
         protected override void Update(GameTime gameTime)

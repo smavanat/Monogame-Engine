@@ -3,12 +3,12 @@
 <grid name ="Test Grid" sizeX ="10" sizeY ="10">
 	<Row>1 1 1 1 1 1 1 1 1 1</Row>
 	<Row>1 0 0 0 0 0 0 0 0 1</Row>
-	<Row>1 0 4 4 0 0 0 0 0 1</Row>
+	<Row>1 0 4 4 0 0 0 6 0 1</Row>
 	<Row>1 0 4 4 0 0 0 0 0 1</Row>
 	<Row>1 0 4 4 0 0 0 0 0 1</Row>
 	<Row>1 0 4 4 0 0 0 0 0 1</Row>
 	<Row>1 0 0 0 0 0 0 0 0 1</Row>
-	<Row>1 0 0 0 0 0 0 0 0 1</Row>
+	<Row>1 0 0 0 0 0 0 2 0 1</Row>
 	<Row>1 0 0 0 0 0 0 0 0 1</Row>
 	<Row>1 1 1 1 1 1 1 1 1 1</Row>
 </grid>

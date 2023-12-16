@@ -14,7 +14,7 @@ namespace AI_test.Sprites
     {
         private Vector2 origin;
         private Collider trigger;
-        public Door(Texture2D _texture, Vector2 _position) : base(_texture, _position, 0, false)
+        public Door(Texture2D _texture, Vector2 _position) : base(_texture, _position, 0)
         { origin = new Vector2(texture.Width / 2, texture.Height / 2); 
             //IsCollideable = true; 
             trigger = new Collider(new Rectangle((int)_position.X, (int)_position.Y, texture.Width, texture.Height), this);

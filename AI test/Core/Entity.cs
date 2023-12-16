@@ -1,37 +1,44 @@
-﻿using AI_test.AI_and_Behaviours;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AI_test.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
+
 
 namespace AI_test.Core
 {
-    //Basic class that is used by all objects that update,
-    public abstract class Component
+    public abstract class Entity
     {
-        public Component parent;
-        public List<Component> children;
-        public Component(Component _parent = null) 
-        {EntityManager.AddGameObject(this); parent = _parent; children = new List<Component>();}
+        Vector2 Position;
+        public Entity parent;
+        public List<Object> children;
+
+        Entity(Vector2 _position, Entity _parent = null) { 
+            Position = _position;
+            //EntityManager.AddGameObject(this); 
+            parent = _parent; 
+            children = new List<Object>(); }
 
         //Adds a Child Object
-        public void AddChild(Component Child) { Child.parent = this;  children.Add(Child);}
+        public void AddChild(Object Child) { children.Add(Child); }
 
-        public void AddChildren<T>(List<Component> children)
+        public void AddChildren<T>(List<T> children)
         {
-            foreach(var child in children)
+            foreach (var child in children)
             {
-                child.parent = this;
                 children.Add(child);
             }
-        } 
+        }
 
         //Returns a child object of a specified type (usually a component like a collider)
         public T GetComponent<T>()
         {
             foreach (Object obj in children)
             {
-                if (typeof(T).IsAssignableFrom(obj.GetType()))
+                if (obj.GetType() == typeof(T))
                 {
                     return (T)obj;
                 }
@@ -44,7 +51,7 @@ namespace AI_test.Core
             List<T> components = new List<T>();
             foreach (Object obj in children)
             {
-                if (typeof(T).IsAssignableFrom(obj.GetType()))
+                if (obj.GetType() == typeof(T))
                 {
                     components.Add((T)obj);
                 }
@@ -55,5 +62,5 @@ namespace AI_test.Core
         public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
         public abstract void Update(GameTime gameTime);
-    }
+    }   
 }

@@ -8,15 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AI_test.ToolsllStoragellPrefabs
+namespace AI_test.ToolsIIStorageIIPrefabs
 {
     //A simple inventory I made for holding objects in order to add behaviour tree functionality
     public class Inventory: Component
     {
         public Component[] items = new Component[10];//This is where all the items are stored
-        public Sprite parent;
-
-        public Inventory(Sprite _parent) { parent = _parent; }
+        public int numFirewood = 0;//For GOAP test
 
         public override void Update(GameTime gameTime) {}
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) { }

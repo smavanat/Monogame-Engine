@@ -7,6 +7,8 @@ using static AI_test.Core.Pathfinding;
 using AI_test.Sprites;
 using System.Xml.Linq;
 using System.Threading.Tasks;
+using AI_test.ToolsIIStorageIIPrefabs;
+using System.Diagnostics;
 
 namespace AI_test.Core
 {
@@ -19,7 +21,7 @@ namespace AI_test.Core
         public int bitValue;
         public Collider collider;
         int heapIndex;
-        public Node(int x, int y, int id, Texture2D _image, Vector2 position, float _rotation) : base(_image, position, _rotation, false)
+        public Node(int x, int y, int id, Texture2D _image, Vector2 position, float _rotation) : base(_image, position, _rotation)
         {
             xPos = x;
             yPos = y;
@@ -66,11 +68,9 @@ namespace AI_test.Core
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (bitValue == 1)
-            {
                 //Walls
                 spriteBatch.Draw(texture, Position, null, Color.Black, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
-            }
-            else if(bitValue == 3)
+            else if (bitValue == 3)
                 //Unplanted soil
                 spriteBatch.Draw(texture, Position, null, Color.Orange, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
             else if (bitValue == 4)
@@ -79,10 +79,8 @@ namespace AI_test.Core
             else if (bitValue == 5)
                 spriteBatch.Draw(texture, Position, null, Color.Green, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
             else
-            {
                 //Just regular floor.
                 spriteBatch.Draw(texture, Position, null, Color.White, 0, new Vector2(texture.Width / 2, texture.Height / 2), 1, SpriteEffects.None, 1f);
-            }
             base.Draw(gameTime, spriteBatch);
         }
     }
@@ -115,6 +113,7 @@ namespace AI_test.Core
             Vector2 worldBottomLeft = position - new Vector2(gridWorldSize.X / 2, 0) - new Vector2(0, gridWorldSize.Y / 2);
 
             grid = LoadToGrid(_sprite, worldBottomLeft);
+            SpawnObjects();
         }
         //Given a node, get the 8 neighbours surrounding it.
         public List<Node> GetNeighbours(Node node)
@@ -213,9 +212,13 @@ namespace AI_test.Core
         {
             foreach (Node n in grid)
             {
-                if (n.bitValue == 3)
+                if (n.bitValue == 2)
                 {
-                    Door d = new Door(ArtManager.textures["Door"], n.Position);
+                    SupplyPile sp = new SupplyPile(ArtManager.textures["SupplyPile"], n.Position, n.Rotation);
+                }
+                if (n.bitValue == 6)
+                {
+                    ChoppingBlock cb = new ChoppingBlock(ArtManager.textures["ChoppingBlock"], n.Position, n.Rotation);
                 }
             }
         }

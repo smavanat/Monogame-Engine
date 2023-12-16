@@ -27,7 +27,7 @@ namespace AI_test.Sprites
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch){}
 
-        public Sprite(Texture2D _texture, Vector2 _position, float _rotation, bool _isColliding)
+        public Sprite(Texture2D _texture, Vector2 _position, float _rotation/* bool _isColliding*/)
         {
             this.texture = _texture;
             Position = _position;

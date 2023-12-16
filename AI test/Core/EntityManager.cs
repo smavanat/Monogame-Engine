@@ -10,7 +10,7 @@ using System.Threading;
 namespace AI_test.Core
 {
     //Manages all the entities in the game.
-    public static class EntityManager
+    public static class EntityManager//<T> where T : class
     {
         public static List<Component> GameObjects = new List<Component>();
         public static List<Sprite> sprites = new List<Sprite>();//Differentiate for Drawing
@@ -42,6 +42,30 @@ namespace AI_test.Core
             GC.Collect();
             GC.WaitForPendingFinalizers();
         }
+
+        //Returns all the objects of the desired type in the world.
+        public static List<T> FindObjectsOfType<T>()
+        {
+            List<T> objects = new List<T> ();
+            foreach(object c in GameObjects)
+            {
+                if (c.GetType() == typeof(T))
+                    objects.Add((T)c);
+            }
+            return objects;
+        }
+
+        public static List<T> FindObjectsOfType<T>(List<object> input)
+        {
+            List<T> objects = new List<T>();
+            foreach (object c in input)
+            {
+                if (c.GetType() == typeof(T))
+                    objects.Add((T)c);
+            }
+            return objects;
+        }
+
         //Updates all items in the game simultaneously for ease of use.
         public static void Update(GameTime gameTime)
         {
@@ -160,11 +184,13 @@ namespace AI_test.Core
     {
         public static Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
 
-        public static void Load(Game1 instance)
+        public static void Load(Game instance)
         {
             textures.Add("Nodes", instance.Content.Load<Texture2D>("Node"));
             textures.Add("Door", instance.Content.Load<Texture2D>("Door"));
             textures.Add("Player", instance.Content.Load<Texture2D>("Operator"));
+            textures.Add("SupplyPile", instance.Content.Load<Texture2D>("Supply Pile"));
+            textures.Add("ChoppingBlock", instance.Content.Load<Texture2D>("Chopping Block"));
         }
     }
 }

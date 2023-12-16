@@ -9,6 +9,7 @@ using System.Security.AccessControl;
 using System.Timers;
 using System.Diagnostics;
 //https://gamedev-resources.com/get-started-with-behavior-trees/#Getting_started
+//https://github.com/Yecats/UnityBehaviorTreeVisualizer/wiki/Standard-Behavior-Tree-Nodes
 
 namespace AI_test.AI_and_Behaviours
 {
@@ -221,7 +222,8 @@ namespace AI_test.AI_and_Behaviours
             //If more time has passed than we wanted, it's time to stop.
             if (elapsedTime > timeToWait)
             {
-                Debug.WriteLine(startTime);
+                //Debug.WriteLine(startTime);
+                //Debug.WriteLine("SUCCESS");
                 return NodeState.SUCCESS;
             }
             return NodeState.RUNNING;
@@ -265,7 +267,7 @@ namespace AI_test.AI_and_Behaviours
     {
         public override NodeState Evaluate()
         {
-            Debug.WriteLine((float)AgentBT.parent._gameTime.TotalGameTime.TotalSeconds);
+            //Debug.WriteLine((float)AgentBT.parent._gameTime.TotalGameTime.TotalSeconds);
             return NodeState.SUCCESS;
         }
     }

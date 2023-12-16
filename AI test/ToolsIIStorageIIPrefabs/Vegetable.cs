@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AI_test.ToolsllStoragellPrefabs
+namespace AI_test.ToolsIIStorageIIPrefabs
 {
     //A simple object I made to add behaviour tree functionality
     internal class Vegetable : Component

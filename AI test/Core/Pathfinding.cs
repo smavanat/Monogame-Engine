@@ -227,7 +227,7 @@ namespace AI_test.Core
 
     public static class SteeringBehaviours
     {
-        public static Vector2 Seek(Vector2 position, Vector2 target, GameTime gameTime, float maxSpeed, int maxForce = 3)
+        public static Vector2 Seek(Vector2 position, Vector2 target, /*GameTime gameTime*/ float maxSpeed, int maxForce = 3)
         {
             Vector2 velocity = target - position;
             velocity.Normalize();
@@ -239,7 +239,7 @@ namespace AI_test.Core
             steering = Truncate(steering, maxForce);
 
             velocity = Truncate(velocity + steering, (int)maxSpeed);
-            position += velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            position += velocity;// * (float)gameTime.ElapsedGameTime.TotalSeconds;
             return position;
         }
         public static Vector2 Truncate(Vector2 vector, int max)
