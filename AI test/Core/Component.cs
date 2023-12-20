@@ -3,6 +3,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace AI_test.Core
 {
@@ -15,7 +17,7 @@ namespace AI_test.Core
         {EntityManager.AddGameObject(this); parent = _parent; children = new List<Component>();}
 
         //Adds a Child Object
-        public void AddChild(Component Child) { Child.parent = this;  children.Add(Child);}
+        public void AddChild(Component Child) { Child.parent = this;  this.children.Add(Child);}
 
         public void AddChildren<T>(List<Component> children)
         {
@@ -27,7 +29,7 @@ namespace AI_test.Core
         } 
 
         //Returns a child object of a specified type (usually a component like a collider)
-        public T GetComponent<T>()
+        public T GetComponent<T>() where T : Component
         {
             foreach (Object obj in children)
             {
@@ -36,6 +38,7 @@ namespace AI_test.Core
                     return (T)obj;
                 }
             }
+            //return children.OfType<T>().FirstOrDefault();
             return default;
         }
 

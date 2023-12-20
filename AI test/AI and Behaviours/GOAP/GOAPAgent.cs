@@ -199,11 +199,11 @@ namespace AI_test.AI_and_Behaviours
             };
         }
 
-        private void FindDataProvider() //Need to fix this function
+        private void FindDataProvider() 
         {
             foreach (var child in parent.children)
             {
-                if (typeof(IGOAP).IsAssignableFrom(child.GetType()))//This is not coming up as true. Why?
+                if (typeof(IGOAP).IsAssignableFrom(child.GetType()))
                 {
                     Debug.WriteLine("IGOAP found");
                     dataProvider = child as IGOAP;
@@ -214,7 +214,7 @@ namespace AI_test.AI_and_Behaviours
 
         private void LoadActions()
         {
-            List<GOAPAction> actions = this.parent.GetComponents<GOAPAction>();
+            List<GOAPAction> actions = parent.GetComponents<GOAPAction>();
             foreach (GOAPAction a in actions)
             {
                 availableActions.Add(a);

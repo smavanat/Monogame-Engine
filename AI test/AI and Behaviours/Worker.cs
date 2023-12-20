@@ -11,7 +11,7 @@ namespace AI_test.AI_and_Behaviours
 {
     public abstract class Worker: Component, IGOAP
     {
-        public Inventory inventory;
+        private Inventory inventory;
         public float moveSpeed = 1;
         private Sprite Parent;
 
@@ -20,8 +20,7 @@ namespace AI_test.AI_and_Behaviours
             Parent = parent as Sprite;
             if(inventory == null)
             {
-                AddChild(new Inventory());
-                inventory = GetComponent<Inventory>();
+                inventory = Parent.GetComponent<Inventory>();
             }
         }
         
@@ -71,8 +70,9 @@ namespace AI_test.AI_and_Behaviours
             //Move towards the nextAction's target
             float step = moveSpeed;
             //Parent.Position = (Vector2)(nextAction.target.Position -  Parent.Position) * step;
-            Parent.Position = SteeringBehaviours.Seek(Parent.Position, nextAction.target.Position, 50);
-            //Debug.WriteLine(Parent.Position);
+            Vector2 dir = nextAction.target.Position - Parent.Position;
+            dir.Normalize();
+            Parent.Position += dir * moveSpeed;
 
             if(Vector2.Distance(Parent.Position, nextAction.target.Position) < 1f)
             {

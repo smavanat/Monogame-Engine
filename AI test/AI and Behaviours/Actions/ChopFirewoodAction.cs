@@ -8,6 +8,7 @@ using AI_test.ToolsIIStorageIIPrefabs;
 using AI_test.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 namespace AI_test.AI_and_Behaviours
 {
@@ -89,7 +90,10 @@ namespace AI_test.AI_and_Behaviours
                 //Finished Chopping
                 Inventory inventory = agent.GetComponent<Inventory>();
                 if (inventory != null)
+                {
                     inventory.numFirewood += 5;
+                    chopped = true;
+                }
             }
             return true;
         }

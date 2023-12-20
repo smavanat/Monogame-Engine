@@ -20,7 +20,7 @@ namespace AI_test.AI_and_Behaviours
         {
             HashSet<KeyValuePair<string, object>> goal = new HashSet<KeyValuePair<string, object>>();
 
-            goal.Add(new KeyValuePair<string, object>("HasFirewood", true));
+            goal.Add(new KeyValuePair<string, object>("CollectFirewood", true));
             return goal;
         }
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch){}

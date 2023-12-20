@@ -69,6 +69,7 @@ namespace AI_test.Core
         //Updates all items in the game simultaneously for ease of use.
         public static void Update(GameTime gameTime)
         {
+            Time.Update(gameTime);
             foreach (Component component in GameObjects.ToList())
             {
                     component.Update(gameTime);

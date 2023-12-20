@@ -16,13 +16,12 @@ Collision does not move when holding key in colliding direction and non-collidin
 Can move into walls if using small key presses. Long key presses do not work though
 Possible solution: https://community.monogame.net/t/solved-how-would-i-go-about-sliding-a-collision-while-moving-diagonally/11343/3
 Could also use Seperate Axis theorem or AABB boxes.
+Sometimes one of the Quadtree arrays gives an out of bounds error. No clue why this happens. 
+Restarting the program seems to fix it.
 
 Things to add for GOAP:
-Currently we have decent communication between all the objects involved. However the actoion does 
-not seem to be occuring, rather the agent just sits in its starting position and spaces in and out
-of existence. Need to figure out why. Maybe because GOAP is being called every frame? This does not
-seem to be the case as the console only logs one response from the planner, not one every frame.
-Or something to do with moveAction
+It is finished in its simplest form. Need to try it out now with more complex agents with many actions
+Also need to try with many agents working together on some task.
 
 Not necessary to add Entities currently but I really need to sit down and figure out how my ECS is
 going to work because this system is held together by spit and lollipop sticks
