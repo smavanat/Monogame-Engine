@@ -17,7 +17,7 @@ namespace AI_test.AI_and_Behaviours
         public DropOffFirewoodAction() 
         {
             AddPrecondition("HasFirewood", true); //Can't drop off firewood if we don't have some
-            AddEffect("HasFirewood", false); //We now have no firewood
+            //AddEffect("HasFirewood", false); //We now have no firewood This was for the old forward search planner. Not necessary for regressive search.
             AddEffect("CollectFirewood", true); //We collected firewood
         }
 

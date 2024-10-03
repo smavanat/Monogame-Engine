@@ -18,7 +18,7 @@ namespace AI_test.Core
         public static Quadtree quadtree = new Quadtree(0, new Rectangle(200, 200, 2250, 1500));
 
         static AutoResetEvent autoEvent = new AutoResetEvent(false);
-        static Timer timer = new System.Threading.Timer(PhysicsUpdate, null, 0, 20);
+        //static Timer timer = new System.Threading.Timer(PhysicsUpdate, null, 0, 20);
 
         public static void AddGameObject(Component component)//Adds object to GameObject list
         {
@@ -76,7 +76,7 @@ namespace AI_test.Core
             }
         }
 
-        public static void PhysicsUpdate(object state)
+        public static void PhysicsUpdate()
         {
             //This is the quadtree implementation code found here: http://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374
             quadtree.Clear();
@@ -100,8 +100,8 @@ namespace AI_test.Core
                         continue;
                     else
                     {
-                        if ((colliders[i].Parent.Velocity.X > 0 && IsTouchingLeft(colliders[i], returnObjects[x])) ||
-                        (colliders[i].Parent.Velocity.X < 0 && IsTouchingRight(colliders[i], returnObjects[x])))
+                        if ((colliders[i].Parent.Velocity.X >= 0 && IsTouchingLeft(colliders[i], returnObjects[x])) ||
+                        (colliders[i].Parent.Velocity.X <= 0 && IsTouchingRight(colliders[i], returnObjects[x])))
                         {
                             //colliders[i].IsCollidingHorizontally = true;
                             colliders[i].IsColliding = true;
@@ -118,8 +118,8 @@ namespace AI_test.Core
                             //colliders[i].ParentDirection = v;
                             break;
                         }
-                        else if ((colliders[i].Parent.Velocity.Y > 0 && IsTouchingTop(colliders[i], returnObjects[x])) ||
-                            (colliders[i].Parent.Velocity.Y < 0 && IsTouchingBottom(colliders[i], returnObjects[x])))
+                        else if ((colliders[i].Parent.Velocity.Y >= 0 && IsTouchingTop(colliders[i], returnObjects[x])) ||
+                            (colliders[i].Parent.Velocity.Y <= 0 && IsTouchingBottom(colliders[i], returnObjects[x])))
                         {
                             colliders[i].IsColliding = true;
                             break;
@@ -145,6 +145,7 @@ namespace AI_test.Core
 
         #region Collision
         //This checks if objects are colliding by seeing if bounding boxes overlap.
+        //This is the monogame tutorial method. It doesn't work.
         static bool IsTouchingLeft(Collider sprite, Collider other)
         {
             return sprite.Rectangle.Right + sprite.Parent.Velocity.X > other.Rectangle.Left &&

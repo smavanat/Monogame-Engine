@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using AI_test.Core;
 using System.Linq;
-
+//https://github.com/sploreg/goap/tree/master/Assets/Standard%20Assets/Scripts/AI/GOAP
 namespace AI_test.AI_and_Behaviours
 {
     public class GOAPAgent : Component
@@ -18,7 +18,7 @@ namespace AI_test.AI_and_Behaviours
         private FSM.FSMState performActionState; //Performs an action
 
         private HashSet<GOAPAction> availableActions;
-        private Queue<GOAPAction> currentActions;
+        private Stack<GOAPAction> currentActions;
 
         // this is the implementing class that provides our world data and listens to
         // feedback on planning
@@ -30,7 +30,7 @@ namespace AI_test.AI_and_Behaviours
         {
             stateMachine = new FSM();
             availableActions = new HashSet<GOAPAction>();
-            currentActions = new Queue<GOAPAction>();
+            currentActions = new Stack<GOAPAction>();
             planner = new GOAPPlanner();
             FindDataProvider();
             CreateIdleState();
@@ -81,7 +81,7 @@ namespace AI_test.AI_and_Behaviours
                 HashSet<KeyValuePair<string, object>> goal = dataProvider.CreateGoalState();
 
                 //Plan
-                Queue<GOAPAction> plan = planner.Plan(gameObject, availableActions, worldState, goal);
+                Stack<GOAPAction> plan = planner.Plan(gameObject, availableActions, worldState, goal);
                 if(plan != null)
                 {
                     //We have a plan
@@ -161,7 +161,7 @@ namespace AI_test.AI_and_Behaviours
                 if (action.IsDone())
                 {
                     //The action is done so that we can perform the next one
-                    currentActions.Dequeue();
+                    currentActions.Pop();
                 }
 
                 if(HasActionPlan())
@@ -233,7 +233,7 @@ namespace AI_test.AI_and_Behaviours
             return s;
         }
 
-        public static string PrettyPrint(Queue<GOAPAction> actions)
+        public static string PrettyPrint(Stack<GOAPAction> actions)
         {
             String s = "";
             foreach (GOAPAction a in actions)

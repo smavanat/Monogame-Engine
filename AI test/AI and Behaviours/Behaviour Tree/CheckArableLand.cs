@@ -72,8 +72,8 @@ namespace AI_test.AI_and_Behaviours
             int total = 0;
             for (int i = 0; i < AgentBT.parent.inv.items.Length; i++)
             {
-                if (AgentBT.parent.inv.items[i] != null && AgentBT.parent.inv.items[i].GetType() == typeof(Vegetable))
-                    total++;
+                //if (AgentBT.parent.inv.items[i] != null && AgentBT.parent.inv.items[i].GetType() == typeof(Vegetable))
+                //    total++;
             }
 
             if(total != 0)

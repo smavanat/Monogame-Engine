@@ -76,8 +76,8 @@ namespace AI_test.AI_and_Behaviours
                 {
                     if (AgentBT.parent.inv.items[i] == null)
                     {
-                        AgentBT.parent.inv.items[i] = new Vegetable();
-                        break;
+                        //AgentBT.parent.inv.items[i] = new Vegetable();
+                        //break;
                     }
                 }
                 AgentBT.root.ClearData("target");

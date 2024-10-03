@@ -45,7 +45,7 @@ namespace AI_test.AI_and_Behaviours
             // the same goal again, or else it will just fail.
         }
 
-        public void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GOAPAction> actions)
+        public void PlanFound(HashSet<KeyValuePair<string, object>> goal, Stack<GOAPAction> actions)
         {
             Debug.WriteLine("Plan Found " + GOAPAgent.PrettyPrint(actions));
         }

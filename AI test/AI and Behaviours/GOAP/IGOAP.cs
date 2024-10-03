@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//https://github.com/sploreg/goap/tree/master/Assets/Standard%20Assets/Scripts/AI/GOAP
+//https://gamedevelopment.tutsplus.com/goal-oriented-action-planning-for-a-smarter-ai--cms-20793t
 namespace AI_test.AI_and_Behaviours
 {
     //Any agent that wants to use GOAP must implement this interface. It provides info
@@ -20,7 +21,7 @@ namespace AI_test.AI_and_Behaviours
         void PlanFailed(HashSet<KeyValuePair<string, object>> failedGoal);
 
         //Actions that the agent will perform if a plan is found
-        void PlanFound(HashSet<KeyValuePair<string, object>> goal, Queue<GOAPAction> actions);
+        void PlanFound(HashSet<KeyValuePair<string, object>> goal, Stack<GOAPAction> actions);
 
         //All actions complete and the goal was reached
         void ActionsFinished();

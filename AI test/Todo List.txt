@@ -1,6 +1,6 @@
 For MVP:
 Figure out interactable objects
-Get Basic AI running
+Get Basic AI running - Sort of
 Do a limited layout
 Sprites for player and some NPCs
 
@@ -12,16 +12,22 @@ Skills/Research
 Map Editor
 
 Known Bugs:
-Collision does not move when holding key in colliding direction and non-colliding direction
 Can move into walls if using small key presses. Long key presses do not work though
-Possible solution: https://community.monogame.net/t/solved-how-would-i-go-about-sliding-a-collision-while-moving-diagonally/11343/3
-Could also use Seperate Axis theorem or AABB boxes.
-Sometimes one of the Quadtree arrays gives an out of bounds error. No clue why this happens. 
-Restarting the program seems to fix it.
+Could also use Seperate Axis theorem or AABB boxes. - Fixed. Just changed:
+ if (collider.IsColliding)
+            {
+                Position += Vector2.Zero;   
+            }
+in Player.Update() to:
+ if (collider.IsColliding)
+            {
+                Position -= Velocity;
+                collider.IsColliding = false;   
+            }
 
 Things to add for GOAP:
 It is finished in its simplest form. Need to try it out now with more complex agents with many actions
 Also need to try with many agents working together on some task.
 
-Not necessary to add Entities currently but I really need to sit down and figure out how my ECS is
-going to work because this system is held together by spit and lollipop sticks
+Need to implement joined logger-woodcutter ai. Just need to add trees and modify ChopTreeAction.
+Should look into Utility AI for proper decision making

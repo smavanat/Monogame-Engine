@@ -3,31 +3,31 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using AI_test.Sprites;
-
+//https://github.com/sploreg/goap/tree/master/Assets/Standard%20Assets/Scripts/AI/GOAP
 namespace AI_test.AI_and_Behaviours
-{
-    //Plans what actions can be completed to fulfill a goal state
+{   
     public class GOAPPlanner
     {
-        //Plan what sequence of actions can fulfill the goal.
-        //Returns null if a plan could not be found, or a list of the actions
-        //that must be performed, in order, to fulfill the goal.
-
-        public Queue<GOAPAction> Plan(Sprite agent, HashSet<GOAPAction> availableActions,
+        /*
+         * Plan what sequence of Actions fulfill the goal.
+         * Returns null if a plan could not be found, or a list of the actions
+         * that must be performed in order to fulfill the goal.
+         */
+        public Stack<GOAPAction> Plan(Sprite agent, HashSet<GOAPAction> availableActions,
                                             HashSet<KeyValuePair<string, object>> worldState,
                                             HashSet<KeyValuePair<string, object>> goal)
         {
-            //Reset the actions so we can start fresh with them
-            foreach(GOAPAction a in availableActions)
+            //Reset the actions so that we can start afresh
+            foreach(GOAPAction action in availableActions)
             {
-                a.DoReset();
+                action.DoReset();
             }
 
             //Check what actions can be run using their CheckProceduralPrecondition
             HashSet<GOAPAction> usableActions = new HashSet<GOAPAction>();
-            foreach(GOAPAction a in availableActions)
+            foreach (GOAPAction a in availableActions)
             {
-                if(a.CheckProceduralPrecondition(agent))
+                if (a.CheckProceduralPrecondition(agent))
                     usableActions.Add(a);
             }
 
@@ -37,8 +37,9 @@ namespace AI_test.AI_and_Behaviours
             List<GOAPNode> leaves = new List<GOAPNode>();
 
             //Build graph
-            GOAPNode start = new GOAPNode(null, 0, worldState, null);
-            bool success = BuildGraph(start, leaves, usableActions, goal);
+            GOAPNode start = new GOAPNode(null, 0, goal, null);
+            HashSet<KeyValuePair<string, object>> end = worldState;
+            bool success = BuildGraph(end, start, leaves, usableActions, goal);
 
             if (!success)
             {
@@ -49,9 +50,9 @@ namespace AI_test.AI_and_Behaviours
 
             //Get the cheapest leaf
             GOAPNode cheapest = null;
-            foreach(GOAPNode leaf in leaves)
+            foreach (GOAPNode leaf in leaves)
             {
-                if(cheapest == null)
+                if (cheapest == null)
                     cheapest = leaf;
                 else
                 {
@@ -66,50 +67,50 @@ namespace AI_test.AI_and_Behaviours
             while (n != null)
             {
                 if (n.action != null)
-                    result.Insert(0, n.action);//Insert the action at the front
+                    result.Add(n.action);//Insert the action at the front
                 n = n.parent;
             }
             //We now have the action list in correct order.
 
-            Queue<GOAPAction> queue = new Queue<GOAPAction>();
-            foreach(GOAPAction action in result)
+            Stack<GOAPAction> queue = new Stack<GOAPAction>();
+            foreach (GOAPAction action in result)
             {
-                queue.Enqueue(action);
+                queue.Push(action);
             }
             //Now we have a plan
             return queue;
         }
 
-        //Returns true if at least one solution was found. The possible paths are stored in the
-        //Leaves list. Each leaf has a "runningCost" value where the lowest cost will be the best
-        //Action sequence.
-
-        private bool BuildGraph(GOAPNode parent, List<GOAPNode> leaves, HashSet<GOAPAction> usableActions, HashSet<KeyValuePair<string, object>> goal)
+        /*
+         * Returns true if at least one solution was found.
+         * The possible paths are stored in the leaves list. 
+         * Each leaf has a "runningCost" value where the lowest cost will be the best action sequence
+         */
+        private bool BuildGraph(HashSet<KeyValuePair<string, object>> end, GOAPNode parent, List<GOAPNode> leaves, HashSet<GOAPAction> usableActions, HashSet<KeyValuePair<string, object>> goal)
         {
             bool foundOne = false;
 
-            //Go through each action available at this node and see if we can use it here.
+            //Go through each action available at this node and see if we can use it here
             foreach(GOAPAction action in usableActions)
             {
                 //If the parent state has the conditions for this action's preconditions, we can use it here
-                if(InState(action.Preconditions, parent.state))
+                if(InState(action.Effects, parent.state))
                 {
                     //Apply the action's effects to the parent state
-                    HashSet<KeyValuePair<string, object>> currentState = PopulateState(parent.state, action.Effects);
+                    HashSet<KeyValuePair<string, object>> currentState = PopulateState(parent.state, action.Effects, action.Preconditions);
                     GOAPNode node = new GOAPNode(parent, parent.runningCost + action.cost, currentState, action);
 
-                    if(InState(goal, currentState))
+                    if(InState(currentState, end))
                     {
                         //We found a solution
-                        Debug.WriteLine("InState");
                         leaves.Add(node);
                         foundOne = true;
                     }
                     else
                     {
-                        //Not at a solution yet, so tests all the remaining actions and branch out the tree.
+                        //Not at a solution yet, so test all the remaining actions and branch out the tree
                         HashSet<GOAPAction> subset = ActionSubset(usableActions, action);
-                        bool found = BuildGraph(node, leaves, subset, goal);
+                        bool found = BuildGraph(end, node, leaves, subset, goal);
                         if (found)
                             foundOne = true;
                     }
@@ -118,7 +119,7 @@ namespace AI_test.AI_and_Behaviours
             return foundOne;
         }
 
-        //Create a subset of the actions excluding the removeMe one. Creates a new set.
+        //Creates a new set of actions excluding removeMe
         private HashSet<GOAPAction> ActionSubset(HashSet<GOAPAction> actions, GOAPAction removeMe)
         {
             HashSet<GOAPAction> subset = new HashSet<GOAPAction>();
@@ -130,15 +131,17 @@ namespace AI_test.AI_and_Behaviours
             return subset;
         }
 
-        //Check that all the items in "test" are in "state". If at least one does not match
-        //Or is not there then this returns false.
-        private bool InState(HashSet<KeyValuePair<string, object>> test, HashSet<KeyValuePair<string, object>> state)
+        /*
+         * Check that all items in 'test' are in 'state'. 
+         * If one does not match or is not there then this returns false
+         */
+        private bool InState(HashSet<KeyValuePair<string, object>> test, HashSet<KeyValuePair<string, object>>state)
         {
             bool allMatch = true;
-            foreach (KeyValuePair<string, object> t in test)
+            foreach(KeyValuePair<string, object> t in test)
             {
                 bool match = false;
-                foreach (KeyValuePair<string, object> s in state)
+                foreach(KeyValuePair<string, object> s in state)
                 {
                     if (s.Equals(t))
                     {
@@ -146,30 +149,50 @@ namespace AI_test.AI_and_Behaviours
                         break;
                     }
                 }
-                if(!match)
+                if (!match)
                     allMatch = false;
+
             }
             return allMatch;
         }
 
-        //Apply the stateChange to the current state
-        private HashSet<KeyValuePair<string, object>> PopulateState(HashSet<KeyValuePair<string, object>> currentState, HashSet<KeyValuePair<string, object>> stateChange)
+        //Apply the stateAdd to the currentState
+        private HashSet<KeyValuePair<string, object>> PopulateState(HashSet<KeyValuePair<string, object>> currentState, HashSet<KeyValuePair<string, object>> stateRemove, HashSet<KeyValuePair<string, object>> stateAdd)
         {
             HashSet<KeyValuePair<string, object>> state = new HashSet<KeyValuePair<string, object>>();
-            //Copy the KVPs over as new objects
-            foreach(KeyValuePair<string, object> s in currentState)
+            //Copy the KVPs over as new objects 
+            foreach(KeyValuePair<string, object> t in currentState)
             {
-                state.Add(new KeyValuePair<string, object> ( s.Key, s.Value ));
+                state.Add(new KeyValuePair<string, object>(t.Key, t.Value));
             }
 
-            foreach(KeyValuePair <string, object> change in stateChange)
+            foreach(KeyValuePair<string, object> change in stateRemove)
             {
-                //If the key exists in the current state, update the value
+                //If the key exists in the current state, remove it
                 bool exists = false;
 
-                foreach(KeyValuePair<string, object> s in currentState)
+                foreach(KeyValuePair<string, object> s in state)
                 {
                     if (s.Equals(change))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if(exists)
+                    state.RemoveWhere((KeyValuePair<string, object> kvp) => { return kvp.Key.Equals(change.Key); });
+
+            }
+
+            foreach(KeyValuePair <string, object> change in stateAdd)
+            {
+                //If the key exists in the current state, updae the value
+                bool exists = false;
+
+                foreach(KeyValuePair<string,object> s in state)
+                {
+                    if(s.Equals(change))
                     {
                         exists = true;
                         break;
@@ -182,10 +205,10 @@ namespace AI_test.AI_and_Behaviours
                     KeyValuePair<string, object> updated = new KeyValuePair<string, object>(change.Key, change.Value);
                     state.Add(updated);
                 }
-                //If it does not exist in teh current state, add it.
+                //If it does not exist in the current state, add it
                 else
                 {
-                    state.Add(new KeyValuePair<string, object>(change.Key, change.Value ));
+                    state.Add(new KeyValuePair<string, object> ( change.Key, change.Value ));
                 }
             }
             return state;

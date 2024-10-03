@@ -1,11 +1,7 @@
 ﻿using AI_test.Core;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AI_test.Sprites;
-
+//https://github.com/sploreg/goap/tree/master/Assets/Standard%20Assets/Scripts/AI/GOAP
 namespace AI_test.AI_and_Behaviours
 {
     public abstract class GOAPAction : Component

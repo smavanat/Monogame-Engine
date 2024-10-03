@@ -70,6 +70,7 @@ namespace AI_test
 
             // TODO: Add your update logic here
             EntityManager.Update(gameTime);
+            EntityManager.PhysicsUpdate();
 
             Camera.Follow(player);
             base.Update(gameTime);

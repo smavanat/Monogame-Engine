@@ -15,6 +15,7 @@ namespace AI_test.ToolsIIStorageIIPrefabs
     {
         public Component[] items = new Component[10];//This is where all the items are stored
         public int numFirewood = 0;//For GOAP test
+        public int numLogs = 0; //For GOAP test
 
         public Inventory() { }
 

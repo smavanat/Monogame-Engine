@@ -3,8 +3,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace AI_test.Sprites
 {
@@ -45,7 +43,10 @@ namespace AI_test.Sprites
                 Velocity.Normalize();
 
             if (collider.IsColliding)
-                Position += Vector2.Zero;
+            {
+                Position -= Velocity;
+                collider.IsColliding = false;   
+            }
             else
                 Position += Velocity;
             
